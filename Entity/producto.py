@@ -2,10 +2,10 @@ from pydantic import BaseModel
 
 class Producto(BaseModel):  # class notas(BaseModel)
     id_cliente: int
-    nombre: str
+    nombre_producto: str
     valor: float
 
 class ProductoResponse(BaseModel):
     id_cliente: int
-    nombre: str = None
+    nombre_producto: str = None
     valor: float

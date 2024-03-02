@@ -14,7 +14,7 @@ class EstudianteRepository():
         id = None
         cursor = self.connection.cursor()
 
-        sql = ("INSERT INTO cliente(identificacion, nombre, sexo, fecha_nacimiento) "
+        sql = ("INSERT INTO clientes(identificacion, nombre, sexo, fecha_nacimiento) "
                "VALUES(%s, %s, %s, %s)")
 
         values = (
@@ -31,12 +31,12 @@ class EstudianteRepository():
     def guardar_producto(self, producto: Producto):   # guardar_estudiante
         cursor = self.connection.cursor()
 
-        sql = ("INSERT INTO producto(id_cliente, nombre, valor) "
+        sql = ("INSERT INTO productos(id_cliente, nombre_producto, valor) "
                "VALUES(%s, %s, %s)")
 
         values = (
             producto.id_cliente,                  # estudiante.identificacion,
-            producto.nombre,                          # cliente.nombre
+            producto.nombre_producto,                          # cliente.nombre
             producto.valor)                           # cliente.sexo
            # str(estudiante.fechaNacimiento))
 
@@ -48,11 +48,30 @@ class EstudianteRepository():
         clientes = []
         cursor = self.connection.cursor()
         cursor.execute(
-            "SELECT identificacion, sexo, fecha_nacimiento, valor"
-            " FROM cliente c "  
-            " LEFT JOIN producto p " 
+            "SELECT nombre, identificacion, sexo, fecha_nacimiento, nombre_producto, valor"
+            " FROM clientes c "  
+            " LEFT JOIN productos p " 
             " ON c.id = p.id_cliente " 
             " GROUP BY identificacion "
+        )
+        result = cursor.fetchall()
+
+        for item in result:
+            clientes.append((item))
+
+        cursor.close()
+        return clientes
+
+    def obtener_cliente(self):
+        clientes = []
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "SELECT c.nombre, c.sexo, c.identificacion, c.fecha_nacimiento, p.nombre_producto"
+            " FROM clientes c"
+            " JOIN productos p"
+            " ON c.id = p.id_cliente"
+            " WHERE c.identificacion = 5829"
+
         )
         result = cursor.fetchall()
         for item in result:
@@ -60,3 +79,17 @@ class EstudianteRepository():
 
         cursor.close()
         return clientes
+
+    def obtener_producto(self):
+        productos = []
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "SELECT nombre_producto, valor"
+            " FROM productos"
+        )
+        result = cursor.fetchall()
+        for item in result:
+            productos.append((item))
+
+        cursor.close()
+        return productos

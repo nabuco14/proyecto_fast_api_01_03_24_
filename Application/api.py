@@ -23,3 +23,11 @@ def guardar_producto(producto: Producto):
 @router.get("/obtener_todos")
 def obtener_todos():
     return estudiante_service.obtener_todos()
+
+@router.get("/obtener_cliente")
+def obtener_cliente():
+    return estudiante_service.obtener_cliente()
+
+@router.get("/obtener_producto")
+def obtener_producto():
+    return estudiante_service.obtener_producto()
